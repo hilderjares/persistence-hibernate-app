@@ -9,8 +9,9 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "cleaner")
-public class Cleaner extends Employee {
+@Table(name = "secretary")
+public class Secretary extends Employee {
 
-    private String companyPosition;
+    private String educationLevel;
+    private int workload;
 }

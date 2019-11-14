@@ -7,6 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import com.ufc.app.service.AddressService;
+
 /**
  * Hello world!
  */
@@ -16,18 +18,27 @@ public class App {
 
     public static void main(String[] args) {
 
-        EntityManagerFactory emf;
-        EntityManager em;
+        EntityManager entityManager = null;
+        EntityManagerFactory entityManagerFactory = null;
 
         try {
 
-            emf = Persistence.createEntityManagerFactory("persistence");
-            em = emf.createEntityManager();
+            entityManagerFactory = Persistence.createEntityManagerFactory("persistence");
+            entityManager = entityManagerFactory.createEntityManager();
 
-            LOGGER.log(Level.INFO, "connection was:" + em.isOpen());
+            AddressService addressService = new AddressService(entityManagerFactory, entityManager);
+
+            // addressService.createAddress();
+            // addressService.createAddress();
+
+            addressService.listAll();
+            // addressService.getAddress(1);
 
         } catch (Throwable ex) {
             LOGGER.log(Level.WARNING, ex.getMessage());
+        } finally {
+            entityManager.close();
+            entityManagerFactory.close();
         }
     }
 }

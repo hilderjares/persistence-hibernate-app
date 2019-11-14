@@ -7,6 +7,11 @@
 		<provider>
 			org.hibernate.jpa.HibernatePersistenceProvider
 		</provider>
+		<class>com.ufc.app.model.Department</class>
+		<class>com.ufc.app.model.Project</class>
+		<class>com.ufc.app.model.Researcher</class>
+		<class>com.ufc.app.model.Address</class>
+		<class>com.ufc.app.model.Employee</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/persistence-02" />
@@ -14,6 +19,7 @@
 			<property name="javax.persistence.jdbc.password" value="root" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
 			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 		</properties>
 	</persistence-unit>
 </persistence>

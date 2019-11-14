@@ -9,50 +9,50 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import com.ufc.app.model.Department;
+import com.ufc.app.model.Project;
 
-public class DepartmentDao implements Dao<Department> {
+public class ProjectDao implements Dao<Project> {
 
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
 
-    public DepartmentDao(EntityManagerFactory entityManagerFactory, EntityManager entityManager) {
+    public ProjectDao(EntityManagerFactory entityManagerFactory, EntityManager entityManager) {
         this.entityManagerFactory = entityManagerFactory;
         this.entityManager = entityManager;
     }
 
     @Override
-    public Department get(long id) {
-        return this.entityManager.find(Department.class, id);
+    public Project get(long id) {
+        return this.entityManager.find(Project.class, id);
     }
 
     @Override
-    public List<Department> getAll() {
+    public List<Project> getAll() {
 
-        List<Department> departments = null;
+        List<Project> projects = null;
 
         try {
             CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
-            CriteriaQuery<Department> cq = cb.createQuery(Department.class);
-            Root<Department> rootEntry = cq.from(Department.class);
-            CriteriaQuery<Department> all = cq.select(rootEntry);
-            TypedQuery<Department> allQuery = this.entityManager.createQuery(all);
+            CriteriaQuery<Project> cq = cb.createQuery(Project.class);
+            Root<Project> rootEntry = cq.from(Project.class);
+            CriteriaQuery<Project> all = cq.select(rootEntry);
+            TypedQuery<Project> allQuery = this.entityManager.createQuery(all);
 
-            departments = allQuery.getResultList();
+            projects = allQuery.getResultList();
         } catch (Exception e) {
             this.entityManager.getTransaction().rollback();
         } finally {
             this.entityManager.close();
             this.entityManagerFactory.close();
         }
-        return departments;
+        return projects;
     }
 
     @Override
-    public void save(Department department) {
+    public void save(Project project) {
         try {
             this.entityManager.getTransaction().begin();
-            this.entityManager.persist(department);
+            this.entityManager.persist(project);
             this.entityManager.getTransaction().commit();
         } catch (Exception e) {
             this.entityManager.getTransaction().rollback();
@@ -63,15 +63,17 @@ public class DepartmentDao implements Dao<Department> {
     }
 
     @Override
-    public void update(Department department, long id) {
+    public void update(Project project, long id) {
         try {
             this.entityManager.getTransaction().begin();
 
-            Department newDepartment = this.entityManager.find(Department.class, id);
-            newDepartment.setName(department.getName());
-            newDepartment.setNumber(department.getNumber());
+            Project newProject = this.entityManager.find(Project.class, id);
+            
+            newProject.setName(project.getName());
+            newProject.setPeriod(project.getPeriod());
+            newProject.setDepartment(project.getDepartment());
 
-            this.entityManager.merge(newDepartment);
+            this.entityManager.merge(newProject);
             this.entityManager.getTransaction().commit();
 
         } catch (Exception e) {
@@ -83,10 +85,10 @@ public class DepartmentDao implements Dao<Department> {
     }
 
     @Override
-    public void delete(Department department) {
+    public void delete(Project project) {
         try {
             this.entityManager.getTransaction().begin();
-            this.entityManager.remove(department);
+            this.entityManager.remove(project);
             this.entityManager.getTransaction().commit();
         } catch (Exception e) {
             this.entityManager.getTransaction().rollback();

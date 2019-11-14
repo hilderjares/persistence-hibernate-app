@@ -9,50 +9,50 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import com.ufc.app.model.Department;
+import com.ufc.app.model.Secretary;
 
-public class DepartmentDao implements Dao<Department> {
+public class SecretaryDao implements Dao<Secretary> {
 
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
 
-    public DepartmentDao(EntityManagerFactory entityManagerFactory, EntityManager entityManager) {
+    public SecretaryDao(EntityManagerFactory entityManagerFactory, EntityManager entityManager) {
         this.entityManagerFactory = entityManagerFactory;
         this.entityManager = entityManager;
     }
 
     @Override
-    public Department get(long id) {
-        return this.entityManager.find(Department.class, id);
+    public Secretary get(long id) {
+        return this.entityManager.find(Secretary.class, id);
     }
 
     @Override
-    public List<Department> getAll() {
+    public List<Secretary> getAll() {
 
-        List<Department> departments = null;
+        List<Secretary> secretaries = null;
 
         try {
             CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
-            CriteriaQuery<Department> cq = cb.createQuery(Department.class);
-            Root<Department> rootEntry = cq.from(Department.class);
-            CriteriaQuery<Department> all = cq.select(rootEntry);
-            TypedQuery<Department> allQuery = this.entityManager.createQuery(all);
+            CriteriaQuery<Secretary> cq = cb.createQuery(Secretary.class);
+            Root<Secretary> rootEntry = cq.from(Secretary.class);
+            CriteriaQuery<Secretary> all = cq.select(rootEntry);
+            TypedQuery<Secretary> allQuery = this.entityManager.createQuery(all);
 
-            departments = allQuery.getResultList();
+            secretaries = allQuery.getResultList();
         } catch (Exception e) {
             this.entityManager.getTransaction().rollback();
         } finally {
             this.entityManager.close();
             this.entityManagerFactory.close();
         }
-        return departments;
+        return secretaries;
     }
 
     @Override
-    public void save(Department department) {
+    public void save(Secretary secretary) {
         try {
             this.entityManager.getTransaction().begin();
-            this.entityManager.persist(department);
+            this.entityManager.persist(secretary);
             this.entityManager.getTransaction().commit();
         } catch (Exception e) {
             this.entityManager.getTransaction().rollback();
@@ -63,15 +63,18 @@ public class DepartmentDao implements Dao<Department> {
     }
 
     @Override
-    public void update(Department department, long id) {
+    public void update(Secretary secretary, long id) {
         try {
             this.entityManager.getTransaction().begin();
 
-            Department newDepartment = this.entityManager.find(Department.class, id);
-            newDepartment.setName(department.getName());
-            newDepartment.setNumber(department.getNumber());
+            Secretary newSecretary = this.entityManager.find(Secretary.class, id);
+            newSecretary.setName(secretary.getName());
+            newSecretary.setSalary(secretary.getSalary());
+            newSecretary.setBirthday(secretary.getBirthday());
+            newSecretary.setEducationLevel(secretary.getEducationLevel());
+            newSecretary.setWorkload(secretary.getWorkload());
 
-            this.entityManager.merge(newDepartment);
+            this.entityManager.merge(newSecretary);
             this.entityManager.getTransaction().commit();
 
         } catch (Exception e) {
@@ -83,10 +86,10 @@ public class DepartmentDao implements Dao<Department> {
     }
 
     @Override
-    public void delete(Department department) {
+    public void delete(Secretary secretary) {
         try {
             this.entityManager.getTransaction().begin();
-            this.entityManager.remove(department);
+            this.entityManager.remove(secretary);
             this.entityManager.getTransaction().commit();
         } catch (Exception e) {
             this.entityManager.getTransaction().rollback();

@@ -9,50 +9,50 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import com.ufc.app.model.Department;
+import com.ufc.app.model.Cleaner;
 
-public class DepartmentDao implements Dao<Department> {
+public class CleanerDao implements Dao<Cleaner> {
 
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
 
-    public DepartmentDao(EntityManagerFactory entityManagerFactory, EntityManager entityManager) {
+    public CleanerDao(EntityManagerFactory entityManagerFactory, EntityManager entityManager) {
         this.entityManagerFactory = entityManagerFactory;
         this.entityManager = entityManager;
     }
 
     @Override
-    public Department get(long id) {
-        return this.entityManager.find(Department.class, id);
+    public Cleaner get(long id) {
+        return this.entityManager.find(Cleaner.class, id);
     }
 
     @Override
-    public List<Department> getAll() {
+    public List<Cleaner> getAll() {
 
-        List<Department> departments = null;
+        List<Cleaner> cleaners = null;
 
         try {
             CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
-            CriteriaQuery<Department> cq = cb.createQuery(Department.class);
-            Root<Department> rootEntry = cq.from(Department.class);
-            CriteriaQuery<Department> all = cq.select(rootEntry);
-            TypedQuery<Department> allQuery = this.entityManager.createQuery(all);
+            CriteriaQuery<Cleaner> cq = cb.createQuery(Cleaner.class);
+            Root<Cleaner> rootEntry = cq.from(Cleaner.class);
+            CriteriaQuery<Cleaner> all = cq.select(rootEntry);
+            TypedQuery<Cleaner> allQuery = this.entityManager.createQuery(all);
 
-            departments = allQuery.getResultList();
+            cleaners = allQuery.getResultList();
         } catch (Exception e) {
             this.entityManager.getTransaction().rollback();
         } finally {
             this.entityManager.close();
             this.entityManagerFactory.close();
         }
-        return departments;
+        return cleaners;
     }
 
     @Override
-    public void save(Department department) {
+    public void save(Cleaner cleaner) {
         try {
             this.entityManager.getTransaction().begin();
-            this.entityManager.persist(department);
+            this.entityManager.persist(cleaner);
             this.entityManager.getTransaction().commit();
         } catch (Exception e) {
             this.entityManager.getTransaction().rollback();
@@ -63,15 +63,17 @@ public class DepartmentDao implements Dao<Department> {
     }
 
     @Override
-    public void update(Department department, long id) {
+    public void update(Cleaner cleaner, long id) {
         try {
             this.entityManager.getTransaction().begin();
 
-            Department newDepartment = this.entityManager.find(Department.class, id);
-            newDepartment.setName(department.getName());
-            newDepartment.setNumber(department.getNumber());
+            Cleaner newCleaner = this.entityManager.find(Cleaner.class, id);
+            newCleaner.setName(cleaner.getName());
+            newCleaner.setSalary(cleaner.getSalary());
+            newCleaner.setBirthday(cleaner.getBirthday());
+            newCleaner.setCompanyPosition(cleaner.getCompanyPosition());
 
-            this.entityManager.merge(newDepartment);
+            this.entityManager.merge(newCleaner);
             this.entityManager.getTransaction().commit();
 
         } catch (Exception e) {
@@ -83,10 +85,10 @@ public class DepartmentDao implements Dao<Department> {
     }
 
     @Override
-    public void delete(Department department) {
+    public void delete(Cleaner cleaner) {
         try {
             this.entityManager.getTransaction().begin();
-            this.entityManager.remove(department);
+            this.entityManager.remove(cleaner);
             this.entityManager.getTransaction().commit();
         } catch (Exception e) {
             this.entityManager.getTransaction().rollback();
