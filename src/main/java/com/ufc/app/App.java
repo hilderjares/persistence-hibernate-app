@@ -9,9 +9,6 @@ import javax.persistence.Persistence;
 
 import com.ufc.app.service.AddressService;
 
-/**
- * Hello world!
- */
 public class App {
 
     private static final Logger LOGGER = Logger.getLogger(App.class.getName());
